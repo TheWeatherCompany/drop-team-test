@@ -1,0 +1,21 @@
+{
+  "name": "drop-black-map-performance-testing",
+  "version": "1.0.0",
+  "description": "Playwright performance test for the Drop Black map, with PDF analytics report",
+  "main": "drop_black_performance_test.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node drop_black_performance_test.js",
+    "models": "node discover_models.js",
+    "visualize": "python3 visualize_metrics.py"
+  },
+  "packageManager": "pnpm@10.26.2",
+  "engines": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "playwright": "1.62.1",
+    "express": "^4.22.2"
+  }
+}

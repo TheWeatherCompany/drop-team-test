@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Secrets
+.env
+
+# Python bytecode
+__pycache__/
+
+# macOS
+.DS_Store
+
+# Test results from 2026-10-21
+drop-black-map-performance/results/2026-10-21/

@@ -1,0 +1,113 @@
+{
+  "_about": "Written by `pnpm models` (discover_models.js). Keys are Layers-tab ids as they appear on a fresh load; `models` maps each model button to the card id the layer switches to. Layers not listed have no model choice.",
+  "generatedAt": "2026-10-20T19:02:00.321Z",
+  "url": "https://drop-black-dev.vercel.weather.com/",
+  "layerCount": 67,
+  "layers": {
+    "PrecipTypeRadarGraf": {
+      "name": "Precip type",
+      "default": "GRAF",
+      "models": {
+        "GRAF": "PrecipTypeRadarGraf",
+        "HRRR": "PrecipTypeRadarHrrr",
+        "ECMWF": "PrecipTypeEcmwf"
+      }
+    },
+    "PrecipAccumulationGraf": {
+      "name": "Precipitation accumulation",
+      "default": "FOD",
+      "models": {
+        "FOD": "PrecipAccumulationGraf",
+        "HRRR": "PrecipAccumulationHrrr",
+        "ECMWF": "PrecipAccumulationEcmwf"
+      }
+    },
+    "IceAccumulationGraf": {
+      "name": "Ice accumulation",
+      "default": "FOD",
+      "models": {
+        "FOD": "IceAccumulationGraf",
+        "ECMWF": "IceAccumulationEcmwf"
+      }
+    },
+    "SnowAccumulationGraf": {
+      "name": "Snow accumulation",
+      "default": "FOD",
+      "models": {
+        "FOD": "SnowAccumulationGraf",
+        "HRRR": "SnowAccumulationHrrr",
+        "ECMWF": "SnowAccumulationEcmwf"
+      }
+    },
+    "WindSpeedGraf": {
+      "name": "Wind speed",
+      "default": "GRAF",
+      "models": {
+        "GRAF": "WindSpeedGraf",
+        "HRRR": "WindSpeedHrrr",
+        "ECMWF": "WindSpeedEcmwf"
+      }
+    },
+    "WindGustGraf": {
+      "name": "Wind gust",
+      "default": "FOD",
+      "models": {
+        "FOD": "WindGustGraf",
+        "HRRR": "WindGustHrrr",
+        "ECMWF": "WindGustEcmwf"
+      }
+    },
+    "VisibilityGraf": {
+      "name": "Visibility",
+      "default": "GRAF",
+      "models": {
+        "GRAF": "VisibilityGraf",
+        "ECMWF": "VisibilityEcmwf",
+        "GFS": "VisibilityGfs"
+      }
+    },
+    "CloudCoverGraf": {
+      "name": "Cloud cover",
+      "default": "GRAF",
+      "models": {
+        "GRAF": "CloudCoverGraf",
+        "HRRR": "CloudCoverHrrr",
+        "ECMWF": "CloudCoverSurfaceEcmwfGrid"
+      }
+    },
+    "TemperatureFod": {
+      "name": "Temperature",
+      "default": "FOD",
+      "models": {
+        "FOD": "TemperatureFod",
+        "GRAF": "TemperatureGraf",
+        "HRRR": "TemperatureHrrr",
+        "ECMWF": "TemperatureEcmwf"
+      }
+    },
+    "DewPointDrop": {
+      "name": "Dew point",
+      "default": "FOD",
+      "models": {
+        "FOD": "DewPointDrop",
+        "ECMWF": "DewPointEcmwf"
+      }
+    },
+    "FeelsLikeDrop": {
+      "name": "Feels like temperature",
+      "default": "FOD",
+      "models": {
+        "FOD": "FeelsLikeDrop",
+        "ECMWF": "FeelsLikeEcmwf"
+      }
+    },
+    "RelativeHumidityGraf": {
+      "name": "Relative humidity",
+      "default": "GRAF",
+      "models": {
+        "GRAF": "RelativeHumidityGraf",
+        "HRRR": "RelativeHumidityHrrr"
+      }
+    }
+  }
+}

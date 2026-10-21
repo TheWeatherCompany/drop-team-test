@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Drop Black Test Config Builder</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #1e293b;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      border: 1px solid #334155;
+    }
+
+    h1 { color: #60a5fa; font-size: 2.2em; margin-bottom: 8px; }
+    .container > p { color: #94a3b8; margin-bottom: 24px; }
+
+    .section {
+      margin: 20px 0;
+      padding: 24px;
+      background: #0f172a;
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
+
+    .section h3 {
+      color: #60a5fa;
+      font-size: 1.3em;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #334155;
+    }
+
+    .hint { color: #94a3b8; font-size: 0.9em; margin: 4px 0 12px; }
+
+    label { color: #cbd5e1; font-weight: 500; }
+
+    input[type="text"], input[type="number"], select {
+      padding: 10px;
+      margin: 6px 0;
+      width: 100%;
+      max-width: 420px;
+      background: #0f172a;
+      border: 2px solid #334155;
+      border-radius: 8px;
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+
+    input:focus, select:focus { outline: none; border-color: #60a5fa; }
+
+    input[type="checkbox"] { width: 16px; height: 16px; accent-color: #3b82f6; vertical-align: middle; }
+
+    .field { margin-bottom: 14px; }
+    .field > label[for] { display: block; }
+
+    button {
+      padding: 10px 20px;
+      margin: 4px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-primary { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
+    .btn-run { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white; }
+    .btn-secondary { background: #475569; color: white; }
+    .btn-small { padding: 6px 12px; font-size: 11px; }
+
+    .overlay-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 8px 16px;
+    }
+
+    .overlay-grid label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 400;
+    }
+
+    .overlay-grid label:hover { background: #1e293b; }
+
+    table.phases { border-collapse: collapse; width: 100%; max-width: 700px; }
+    table.phases th { text-align: left; color: #94a3b8; font-weight: 500; padding: 6px 8px; }
+    table.phases td { padding: 4px 8px; }
+    table.phases select { margin: 0; max-width: 200px; }
+
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; }
+
+    #estimate { color: #94a3b8; margin-left: auto; }
+
+    #status {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      display: none;
+      white-space: pre-wrap;
+    }
+
+    #status.success { display: block; background: rgba(34, 197, 94, 0.15); border: 1px solid #22c55e; color: #86efac; }
+    #status.error { display: block; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; }
+    #status.info { display: block; background: rgba(59, 130, 246, 0.15); border: 1px solid #3b82f6; color: #93c5fd; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🗺️ Drop Black Test Config Builder</h1>
+  <p>Configure the Drop Black map performance test, then save it or run it. The run's progress shows in the server's terminal; results go to <code>results/&lt;date&gt;/</code>.</p>
+
+  <div class="section">
+    <h3>Run</h3>
+    <div class="field">
+      <label for="url">App URL</label>
+      <input type="text" id="url">
+    </div>
+    <div class="field">
+      <label for="desk">Desk</label>
+      <input type="text" id="desk" placeholder="Leave blank to skip desk selection (baseline)">
+      <div class="hint">Exactly as shown in the desk picker, e.g. <code>Test2</code> or <code>Share desk Test</code>.</div>
+    </div>
+    <div class="field">
+      <label for="duration">Phase duration (minutes)</label>
+      <input type="number" id="duration" min="0.5" step="0.5">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Layer (Layers tab)</h3>
+    <div class="hint">Only one Layers-tab layer can be on at a time in Drop Black. Layers that let you pick a
+      forecast model list their models in brackets.</div>
+    <select id="layer"></select>
+    <div class="field" id="modelField" style="margin-top: 12px">
+      <label for="model">Model</label>
+      <select id="model"></select>
+      <div class="hint" id="modelHint"></div>
+    </div>
+    <div class="hint" id="modelsMissing"></div>
+  </div>
+
+  <div class="section">
+    <h3>Overlays (Overlays tab)</h3>
+    <div class="hint">Overlays turn on and off independently.
+      <button class="btn-secondary btn-small" onclick="setAllOverlays(true)">All on</button>
+      <button class="btn-secondary btn-small" onclick="setAllOverlays(false)">All off</button>
+    </div>
+    <div class="overlay-grid" id="overlays"></div>
+  </div>
+
+  <div class="section">
+    <h3>Phases</h3>
+    <div class="hint">Each enabled phase runs mixed pan/zoom plus isolated pan-only and zoom-only blocks for the phase duration.</div>
+    <table class="phases">
+      <thead><tr><th></th><th>Enabled</th><th>Projection</th><th>Style</th><th></th></tr></thead>
+      <tbody id="phases"></tbody>
+    </table>
+    <button class="btn-secondary btn-small" onclick="addPhase()">+ Add phase</button>
+  </div>
+
+  <div class="section">
+    <h3>Timebar</h3>
+    <div class="hint">Runs last, after all phases: plays the timeline for one phase duration with the map held still over the US.</div>
+    <div class="field">
+      <label><input type="checkbox" id="tbEnabled" onchange="refresh()"> Run timebar segment</label>
+    </div>
+    <div class="field">
+      <label for="tbPhase">Use projection/style from</label>
+      <select id="tbPhase"></select>
+    </div>
+    <div class="field">
+      <label for="tbLayer">Layer to animate</label>
+      <select id="tbLayer"></select>
+    </div>
+    <div class="field" id="tbModelField">
+      <label for="tbModel">Model</label>
+      <select id="tbModel"></select>
+      <div class="hint" id="tbModelHint"></div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-primary" onclick="saveConfig()">💾 Save config</button>
+    <button class="btn-run" id="runBtn" onclick="runTest()">🚀 Run test</button>
+    <button class="btn-secondary" onclick="$('fileInput').click()">📂 Load config file</button>
+    <input type="file" id="fileInput" accept=".json,application/json" style="display: none" onchange="loadFile(this)">
+    <button class="btn-secondary" onclick="download()">⬇️ Download JSON</button>
+    <span id="estimate"></span>
+  </div>
+  <div id="status"></div>
+</div>
+
+<script>
+  // Layers-tab cards, grouped like Drop Black's layer menu. Values are the
+  // data-testid="layer-card-<id>" ids the test toggles.
+  const LAYER_GROUPS = {
+    'Radar': [
+      ['Radar', 'Radar'], ['Single site radar', 'SingleSiteRadar'], ['Convective outlook', 'ConvectiveOutlook'],
+      ['Echo tops', 'EchoTopsRadar'], ['Observed ice accumulation', 'ObservedIceAccumulation'],
+      ['Observed precip accumulation', 'ObservedPrecipAccumulation'], ['Observed snow accumulation', 'ObservedSnowAccumulation'],
+      ['Shear', 'Shear'], ['Snow depth', 'SnowDepthObserved'], ['Vertically integrated liquid (NOWrad)', 'VIL'],
+    ],
+    'Satellite': [
+      ['Visible satellite', 'SatVisible'], ['IR satellite', 'SatIR'], ['IR colored satellite', 'SatIRColor'],
+      ['Water vapor satellite', 'SatWaterVapor'],
+    ],
+    'Precip': [
+      ['Precip type', 'PrecipTypeRadarGraf'], ['Precipitation accumulation', 'PrecipAccumulationGraf'],
+      ['Composite reflectivity', 'CompositeReflectivityHrrr'], ['Hail (30 min)', 'HailzoneDrop'],
+      ['Ice accumulation', 'IceAccumulationGraf'], ['Lightning (30 min)', 'LightningForecast30MinDrop'],
+      ['Lightning density', 'LightningDensityEcmwf'], ['Snow accumulation', 'SnowAccumulationGraf'],
+      ['Snow depth', 'SnowDepthEcmwf'],
+    ],
+    'Wind': [
+      ['Wind speed', 'WindSpeedGraf'], ['Wind gust', 'WindGustGraf'], ['Geopotential height', 'GeopotentialHeightEcmwf'],
+      ['MSL pressure', 'MslPressureGraf'],
+    ],
+    'Clouds and aviation': [
+      ['Visibility', 'VisibilityGraf'], ['Cloud cover', 'CloudCoverGraf'], ['Turbulence', 'Turbulence'],
+      ['Ceiling', 'CeilingGraf'], ['Convective inhibition', 'ConvectiveInhibitionHrrr'], ['Echo tops', 'EchoTopsGraf'],
+      ['Freezing altitude', 'FreezingAltitude'], ['High ice water content (HIWC)', 'HiwcDrop'],
+      ['Icing potential', 'IcingPotentialFlightLevelsDrop'], ['Mixed layer CAPE', 'MixedLayerCapeDrop'],
+      ['Most unstable CAPE', 'MostUnstableCapeEcmwf'], ['Precipitable water', 'PrecipitableWaterEcmwf'],
+      ['Surface CAPE', 'SurfaceCapeEcmwf'],
+    ],
+    'Temperature': [
+      ['Temperature', 'TemperatureFod'], ['Dew point', 'DewPointDrop'], ['Feels like temperature', 'FeelsLikeDrop'],
+      ['Relative humidity', 'RelativeHumidityGraf'], ['Specific humidity', 'SpecificHumidityPressureEcmwf'],
+      ['UV index', 'UvIndexDrop'],
+    ],
+    'Maritime': [
+      ['Beaufort scale', 'SeaStateBeaufortGfs'], ['Current Lab Currents', 'CurrentLabCurrents'],
+      ['Observed Surface Ocean Temperature Contour', 'ObservedSurfaceOceanTempContour'],
+      ['Ocean surface wind', 'WindSpeedGfs'], ['Primary waves', 'WavesTotalGfs'],
+      ['Sea ice thickness', 'SeaIceThicknessEcmwf'], ['Sea surface height', 'SeaSurfaceHeightEcmwf'],
+      ['Sea surface temperature', 'SeaSurfaceTemperatureGfs'],
+      ['Significant Wave Height Probability', 'SignificantWaveHeightProbabilityEcmwf'],
+      ['Swell waves', 'WavesSwellGfs'], ['Wind waves', 'WavesWindGfs'], ['WMO Sea state', 'SeaStateWmoGfs'],
+    ],
+    'Air quality': [
+      ['Breathing index', 'BreathingIndexDrop'], ['Mosquito index', 'MosquitoIndexDrop'],
+      ['Near-surface smoke', 'NearSurfaceSmokeHrrr'], ['Pollen index', 'PollenIndexDrop'],
+      ['Vertically integrated smoke', 'VerticallyIntegratedSmokeHrrr'],
+    ],
+    'Soil': [
+      ['Surface solar', 'SurfaceSolarRadiationEcmwf'], ['Estimated volume runoff', 'RunoffEcmwf'],
+      ['Soil moisture', 'SoilMoistureEcmwf'], ['Soil temperature', 'SoilTemperatureEcmwf'],
+    ],
+  };
+
+  const OVERLAYS = [
+    ['Windstream', 'Windstream'], ['Isobars', 'Isobars'], ['Lightning', 'Lightning'], ['Storm tracks', 'StormCells'],
+    ['Fronts', 'Fronts'], ["Gov't alerts", 'GovtAlerts'], ['Airports', 'Airports'],
+    ['SIGMETs (Government)', 'SigmetsGovernment'], ['SIGMETs (TWC)', 'SigmetsTwc'], ['Airspace', 'Airspace'],
+    ['AIRMETs', 'AIRMETs'], ['FPGs', 'FPGs'], ['PIREPs', 'PIREPs'], ['Significant wx observations', 'SignificantWx'],
+    ['Volcanic ash', 'VolcanicAsh'], ['SOFAR Buoys', 'SOFARBuoys'], ['CMAN Buoys', 'CmanBuoys'],
+    ['Ship Reports', 'ShipReports'], ['Weather stations', 'WeatherStations'],
+    ['NHC tropical forecast', 'NHCTropicalForecast'], ['TWC tropical forecast', 'TWCTropicalForecast'],
+    ['Wildfires', 'Wildfires'],
+  ];
+
+  const PROJECTIONS = ['Globe', 'Mercator'];
+  const STYLES = ['Default', 'Dark', 'Satellite'];
+  const DEFAULT_URL = 'https://drop-black-dev.vercel.weather.com/';
+
+  let phases = [];
+  // Layers with a model picker, from layer-models.json (`pnpm models`):
+  // { <layer id>: { name, default, models: { <model>: <card id> } } }
+  let LAYER_MODELS = {};
+  const modelsFor = (id) => (id && LAYER_MODELS[id]) ? Object.keys(LAYER_MODELS[id].models || {}) : [];
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+
+  function layerOptions(noneLabel) {
+    let html = `<option value="">${esc(noneLabel)}</option>`;
+    for (const [group, items] of Object.entries(LAYER_GROUPS)) {
+      html += `<optgroup label="${esc(group)}">`;
+      for (const [name, id] of items) {
+        const models = modelsFor(id);
+        html += `<option value="${esc(id)}">${esc(name)}${models.length ? ` [${esc(models.join(' / '))}]` : ''}</option>`;
+      }
+      html += '</optgroup>';
+    }
+    return html;
+  }
+
+  async function init() {
+    try {
+      const data = await (await fetch('/api/layer-models')).json();
+      LAYER_MODELS = data.layers || {};
+      $('modelsMissing').textContent = data.missing
+        ? 'No model list yet — run `pnpm models` in drop-black-map-performance to see which layers have which models.'
+        : `Model list from ${String(data.generatedAt || '').slice(0, 10)} (${data.url || '?'}). Re-run \`pnpm models\` if Drop Black adds or removes models.`;
+    } catch (e) { /* no server endpoint — no model choices */ }
+    $('layer').innerHTML = layerOptions('None');
+    $('tbLayer').innerHTML = layerOptions('Same as the main layer');
+    $('overlays').innerHTML = OVERLAYS.map(([name, id]) =>
+      `<label><input type="checkbox" data-overlay="${esc(id)}"> ${esc(name)}</label>`).join('');
+    document.querySelectorAll('input, select').forEach(el => el.addEventListener('change', refresh));
+    // Always open with the defaults; only Load config file fills the form from a past config.
+    applyConfig({});
+  }
+
+  function applyConfig(cfg) {
+    $('url').value = cfg.url || DEFAULT_URL;
+    $('desk').value = cfg.desk || '';
+    $('duration').value = (cfg.phaseDuration || 300000) / 60000;
+    $('layer').value = cfg.layer || '';
+    refreshModel('model', cfg.layer || '', cfg.model || '');
+    const overlays = cfg.overlays || {};
+    document.querySelectorAll('[data-overlay]').forEach(cb => { cb.checked = !!overlays[cb.dataset.overlay]; });
+    phases = (cfg.phases && cfg.phases.length ? cfg.phases : [
+      { enabled: true, projection: 'Globe', style: 'Satellite' },
+      { enabled: true, projection: 'Globe', style: 'Dark' },
+      { enabled: true, projection: 'Mercator', style: 'Satellite' },
+      { enabled: true, projection: 'Mercator', style: 'Dark' },
+    ]).map(p => ({ ...p }));
+    const tb = cfg.timebar || {};
+    $('tbEnabled').checked = !!tb.enabled;
+    renderPhases();
+    refresh(); // build the timebar phase options before selecting one
+    $('tbPhase').value = String(tb.phase || 1);
+    $('tbLayer').value = tb.layer || '';
+    refreshModel('tbModel', tb.layer || '', tb.model || '');
+    refresh();
+  }
+
+  // Rebuild a model dropdown for the chosen layer: only that layer's models,
+  // hidden entirely for layers without a model choice. Keeps the current pick
+  // when the layer still offers it.
+  function refreshModel(selId, layerId, keep) {
+    const field = $(selId + 'Field'), hint = $(selId + 'Hint'), sel = $(selId);
+    const models = modelsFor(layerId);
+    const isTimebar = selId === 'tbModel';
+    if (isTimebar && !layerId) {
+      sel.innerHTML = '<option value=""></option>';
+      field.style.display = 'none';
+      return;
+    }
+    if (!models.length) {
+      sel.innerHTML = '<option value=""></option>';
+      field.style.display = layerId ? '' : 'none';
+      sel.style.display = 'none';
+      hint.textContent = 'This layer has no model choice.';
+      return;
+    }
+    const def = LAYER_MODELS[layerId].default;
+    sel.innerHTML = `<option value="">App default (${esc(def)})</option>` +
+      models.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join('');
+    sel.value = models.includes(keep) ? keep : '';
+    field.style.display = '';
+    sel.style.display = '';
+    hint.textContent = `Available for this layer: ${models.join(', ')}. In Drop Black a model choice also switches every other layer that offers it.`;
+  }
+
+  function renderPhases() {
+    const select = (values, current, onchange) =>
+      `<select onchange="${onchange}">${values.map(v => `<option${v === current ? ' selected' : ''}>${v}</option>`).join('')}</select>`;
+    $('phases').innerHTML = phases.map((p, i) => `
+      <tr>
+        <td>Phase ${i + 1}</td>
+        <td><input type="checkbox" ${p.enabled ? 'checked' : ''} onchange="phases[${i}].enabled = this.checked; refresh()"></td>
+        <td>${select(PROJECTIONS, p.projection, `phases[${i}].projection = this.value; refresh()`)}</td>
+        <td>${select(STYLES, p.style, `phases[${i}].style = this.value; refresh()`)}</td>
+        <td><button class="btn-secondary btn-small" onclick="removePhase(${i})" ${phases.length <= 1 ? 'disabled' : ''}>Remove</button></td>
+      </tr>`).join('');
+  }
+
+  function addPhase() {
+    phases.push({ enabled: true, projection: 'Globe', style: 'Default' });
+    renderPhases();
+    refresh();
+  }
+
+  function removePhase(i) {
+    phases.splice(i, 1);
+    renderPhases();
+    refresh();
+  }
+
+  function setAllOverlays(on) {
+    document.querySelectorAll('[data-overlay]').forEach(cb => { cb.checked = on; });
+    refresh();
+  }
+
+  // Keep the timebar phase dropdown in sync with the phase list, and show a
+  // rough run-time estimate (setup ~1 min + each enabled phase + timebar).
+  function refresh() {
+    const keep = $('tbPhase').value;
+    $('tbPhase').innerHTML = phases.map((p, i) =>
+      `<option value="${i + 1}">Phase ${i + 1}: ${p.projection} / ${p.style}${p.enabled ? '' : ' (disabled)'}</option>`).join('');
+    if (keep && Number(keep) <= phases.length) $('tbPhase').value = keep;
+    const tbOn = $('tbEnabled').checked;
+    $('tbPhase').disabled = !tbOn;
+    $('tbLayer').disabled = !tbOn;
+    refreshModel('model', $('layer').value, $('model').value);
+    refreshModel('tbModel', $('tbLayer').value, $('tbModel').value);
+    $('tbModel').disabled = !tbOn;
+
+    const mins = parseFloat($('duration').value) || 0;
+    const enabled = phases.filter(p => p.enabled).length;
+    const tbPhase = phases[Number($('tbPhase').value) - 1];
+    const tbRuns = tbOn && tbPhase && tbPhase.enabled;
+    const total = 1 + mins * (enabled + (tbRuns ? 1 : 0));
+    $('estimate').textContent = `≈ ${Math.round(total)} min run · ${enabled} phase${enabled === 1 ? '' : 's'}${tbRuns ? ' + timebar' : ''}`;
+  }
+
+  function buildConfig() {
+    const overlays = {};
+    document.querySelectorAll('[data-overlay]').forEach(cb => { overlays[cb.dataset.overlay] = cb.checked; });
+    return {
+      url: $('url').value.trim() || DEFAULT_URL,
+      desk: $('desk').value.trim() || null,
+      layer: $('layer').value || null,
+      model: $('model').value || null,
+      overlays,
+      phases: phases.map(p => ({ enabled: !!p.enabled, projection: p.projection, style: p.style })),
+      phaseDuration: Math.round((parseFloat($('duration').value) || 5) * 60000),
+      timebar: {
+        enabled: $('tbEnabled').checked,
+        phase: Number($('tbPhase').value) || 1,
+        layer: $('tbLayer').value || null,
+        model: ($('tbLayer').value && $('tbModel').value) || null,
+      },
+    };
+  }
+
+  // Returns an error message, or null if the config is runnable.
+  function validate(cfg) {
+    if (!cfg.phases.some(p => p.enabled)) return 'Enable at least one phase.';
+    if (cfg.phaseDuration < 30000) return 'Phase duration must be at least 0.5 minutes.';
+    if (cfg.timebar.enabled) {
+      const p = cfg.phases[cfg.timebar.phase - 1];
+      if (!p || !p.enabled) return `The timebar uses Phase ${cfg.timebar.phase}, which is disabled — enable it or pick another phase.`;
+      if (!cfg.timebar.layer && !cfg.layer) return 'The timebar needs a layer to animate — pick a main layer or a timebar layer.';
+    }
+    return null;
+  }
+
+  async function post(url, cfg) {
+    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cfg) });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) throw new Error(data.error || `HTTP ${res.status}`);
+    return data;
+  }
+
+  async function saveConfig() {
+    const cfg = buildConfig();
+    const problem = validate(cfg);
+    if (problem) return showStatus(problem, 'error');
+    try {
+      await post('/api/save-config', cfg);
+      showStatus('✅ Saved to test-config.json', 'success');
+    } catch (e) {
+      showStatus(`❌ Could not save: ${e.message}`, 'error');
+    }
+  }
+
+  async function runTest() {
+    const cfg = buildConfig();
+    const problem = validate(cfg);
+    if (problem) return showStatus(problem, 'error');
+    try {
+      const data = await post('/api/run-test', cfg);
+      showStatus(`🚀 Test started (pid ${data.pid}). A Chromium window will open — watch the server terminal for progress.`, 'success');
+      pollStatus();
+    } catch (e) {
+      showStatus(`❌ Could not start the test: ${e.message}`, 'error');
+    }
+  }
+
+  // Disable Run while a test is going so it can't be double-started.
+  async function pollStatus() {
+    try {
+      const { running } = await (await fetch('/api/status')).json();
+      $('runBtn').disabled = running;
+      $('runBtn').textContent = running ? '⏳ Test running…' : '🚀 Run test';
+      if (running) setTimeout(pollStatus, 5000);
+    } catch (e) { /* server gone — leave the button as-is */ }
+  }
+
+  // Fill the form from a chosen JSON file — a downloaded config, or a run's
+  // results/<date>/..._config.json snapshot (its _runEnvironment is ignored).
+  // Only fills the form; Save config / Run test is what writes test-config.json.
+  async function loadFile(input) {
+    const file = input.files[0];
+    input.value = ''; // let the same file be picked again later
+    if (!file) return;
+    let cfg;
+    try {
+      cfg = JSON.parse(await file.text());
+    } catch (e) {
+      return showStatus(`❌ ${file.name} is not valid JSON: ${e.message}`, 'error');
+    }
+    if (!cfg || typeof cfg !== 'object' || !('phases' in cfg || 'layer' in cfg || 'overlays' in cfg)) {
+      return showStatus(`❌ ${file.name} doesn't look like a Drop Black test config (no phases / layer / overlays).`, 'error');
+    }
+    const unknownLayers = [cfg.layer, cfg.timebar && cfg.timebar.layer]
+      .filter(id => id && !Object.values(LAYER_GROUPS).flat().some(([, v]) => v === id));
+    const unknownOverlays = Object.keys(cfg.overlays || {})
+      .filter(id => !OVERLAYS.some(([, v]) => v === id));
+    // Only checkable once layer-models.json exists.
+    const unknownModels = Object.keys(LAYER_MODELS).length ? [[cfg.layer, cfg.model], [cfg.timebar && cfg.timebar.layer, cfg.timebar && cfg.timebar.model]]
+      .filter(([layer, model]) => model && !modelsFor(layer).includes(model))
+      .map(([layer, model]) => `${model} for ${layer || 'no layer'}`) : [];
+    applyConfig(cfg);
+    const warnings = [
+      unknownLayers.length && `unknown layer id(s) ignored: ${unknownLayers.join(', ')}`,
+      unknownOverlays.length && `unknown overlay id(s) ignored: ${unknownOverlays.join(', ')}`,
+      unknownModels.length && `model(s) not offered, reset to the app default: ${unknownModels.join('; ')}`,
+    ].filter(Boolean);
+    showStatus(`📂 Loaded ${file.name} into the form — click Save config or Run test to use it.` +
+      (warnings.length ? `\n⚠️  ${warnings.join('; ')}` : ''), warnings.length ? 'info' : 'success');
+  }
+
+  function download() {
+    const blob = new Blob([JSON.stringify(buildConfig(), null, 2) + '\n'], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'test-config.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  function showStatus(msg, type) {
+    const el = $('status');
+    el.textContent = msg;
+    el.className = type;
+  }
+
+  init();
+  pollStatus();
+</script>
+</body>
+</html>
