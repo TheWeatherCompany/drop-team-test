@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "node drop_black_performance_test.js",
+    "test:auth": "node --test auth.test.js",
     "models": "node discover_models.js",
     "visualize": "python3 visualize_metrics.py"
   },
