@@ -36,7 +36,16 @@ const PORT = resolvePort();
 const configPath = path.join(__dirname, 'test-config.json');
 const testPath = path.join(__dirname, 'drop_black_performance_test.js');
 
+const { createAuth, readConfig } = require('./auth');
+
 const app = express();
+const auth = createAuth(readConfig());
+// Everything below sits behind Okta sign-in (set AUTH_DISABLED=true for local use only).
+app.get('/auth/login', auth.login);
+app.get('/auth/callback', auth.callback);
+app.post('/auth/logout', auth.logout);
+app.use(auth.requireAuth);
+app.get('/api/me', auth.me);
 app.use(express.json());
 
 // Only the builder page is served — not the folder, which holds .env.
