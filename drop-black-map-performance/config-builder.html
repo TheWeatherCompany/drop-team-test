@@ -130,6 +130,10 @@
 <body>
 <div class="container">
   <h1>🗺️ Drop Black Test Config Builder</h1>
+  <div id="who" style="display:none; text-align:right; font-size:0.9em;">
+    <span id="who-email"></span>
+    <button type="button" id="sign-out" style="margin-left:8px;">Sign out</button>
+  </div>
   <p>Configure the Drop Black map performance test, then save it or run it. The run's progress shows in the server's terminal; results go to <code>results/&lt;date&gt;/</code>.</p>
 
   <div class="section">
@@ -554,6 +558,19 @@
 
   init();
   pollStatus();
+</script>
+<script>
+  // Shows who is signed in (only present when the Okta gate is on) and handles sign-out.
+  fetch('/api/me').then((r) => (r.ok ? r.json() : null)).then((me) => {
+    if (!me || !me.email) return;
+    document.getElementById('who-email').textContent = me.email;
+    document.getElementById('who').style.display = 'block';
+  }).catch(() => {});
+  document.getElementById('sign-out').addEventListener('click', async () => {
+    const res = await fetch('/auth/logout', { method: 'POST' });
+    const data = await res.json();
+    window.location.assign(data.redirect || '/');
+  });
 </script>
 </body>
 </html>
