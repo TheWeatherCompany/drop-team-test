@@ -1,0 +1,31 @@
+{
+  "name": "drop-black-api-tests",
+  "version": "1.0.0",
+  "description": "API tests for Drop Black, sent through the BFF (drop-black-dev.vercel.weather.com/api/*)",
+  "scripts": {
+    "test": "jest",
+    "test:desk-service": "jest tests/desk-service",
+    "test:weather-data": "jest tests/weather-data",
+    "test:illumination": "jest tests/illumination",
+    "test:alerts": "jest tests/alerts",
+    "test:airport-weather": "jest tests/airport-weather",
+    "test:notam": "jest tests/notam",
+    "test:nav-data": "jest tests/nav-data",
+    "test:cman-buoys": "jest tests/cman-buoys",
+    "test:ship-reports": "jest tests/ship-reports",
+    "test:access-management": "jest tests/access-management",
+    "test:twc-location": "jest tests/twc-location",
+    "test:current-lab": "jest tests/current-lab",
+    "test:sofar": "jest tests/sofar",
+    "postman:build": "node postman/build-collection.js"
+  },
+  "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "dotenv": "^16.6.1",
+    "jest": "^30.0.4",
+    "supertest": "^7.1.3"
+  }
+}

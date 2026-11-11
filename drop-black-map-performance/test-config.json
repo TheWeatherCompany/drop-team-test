@@ -1,5 +1,5 @@
 {
-  "url": "https://drop-black-dev.vercel.weather.com/",
+  "url": "https://drop-black-demo.weather.com/",
   "desk": null,
   "layer": "Radar",
   "model": null,
@@ -8,9 +8,9 @@
     "Isobars": false,
     "Lightning": true,
     "StormCells": false,
-    "Fronts": true,
+    "Fronts": false,
     "GovtAlerts": false,
-    "Airports": false,
+    "Airports": true,
     "SigmetsGovernment": false,
     "SigmetsTwc": false,
     "Airspace": false,
@@ -20,8 +20,8 @@
     "SignificantWx": false,
     "VolcanicAsh": false,
     "SOFARBuoys": false,
-    "CmanBuoys": false,
-    "ShipReports": false,
+    "CmanBuoys": true,
+    "ShipReports": true,
     "WeatherStations": false,
     "NHCTropicalForecast": false,
     "TWCTropicalForecast": false,
@@ -31,17 +31,27 @@
     {
       "enabled": true,
       "projection": "Globe",
+      "style": "Satellite"
+    },
+    {
+      "enabled": false,
+      "projection": "Globe",
       "style": "Dark"
+    },
+    {
+      "enabled": false,
+      "projection": "Mercator",
+      "style": "Satellite"
     },
     {
       "enabled": true,
       "projection": "Mercator",
-      "style": "Satellite"
+      "style": "Dark"
     }
   ],
-  "phaseDuration": 120000,
+  "phaseDuration": 300000,
   "timebar": {
-    "enabled": true,
+    "enabled": false,
     "phase": 1,
     "layer": null,
     "model": null

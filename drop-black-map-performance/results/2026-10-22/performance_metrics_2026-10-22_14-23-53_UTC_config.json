@@ -1,0 +1,73 @@
+{
+  "url": "https://drop-black-dev.vercel.weather.com/",
+  "desk": null,
+  "layer": "Radar",
+  "model": null,
+  "overlays": {
+    "Windstream": false,
+    "Isobars": false,
+    "Lightning": true,
+    "StormCells": false,
+    "Fronts": true,
+    "GovtAlerts": false,
+    "Airports": false,
+    "SigmetsGovernment": false,
+    "SigmetsTwc": false,
+    "Airspace": false,
+    "AIRMETs": false,
+    "FPGs": false,
+    "PIREPs": false,
+    "SignificantWx": false,
+    "VolcanicAsh": false,
+    "SOFARBuoys": false,
+    "CmanBuoys": false,
+    "ShipReports": false,
+    "WeatherStations": false,
+    "NHCTropicalForecast": false,
+    "TWCTropicalForecast": false,
+    "Wildfires": false
+  },
+  "phases": [
+    {
+      "enabled": true,
+      "projection": "Globe",
+      "style": "Dark"
+    },
+    {
+      "enabled": true,
+      "projection": "Mercator",
+      "style": "Satellite"
+    }
+  ],
+  "phaseDuration": 120000,
+  "timebar": {
+    "enabled": true,
+    "phase": 1,
+    "layer": null,
+    "model": null
+  },
+  "_runEnvironment": {
+    "system": {
+      "os": "macOS 25.6.0",
+      "arch": "arm64",
+      "cpuModel": "Apple M3 Pro",
+      "cpuCores": 12,
+      "totalMemoryGB": 36,
+      "hostname": "TWC-M2HGDHWL4V"
+    },
+    "display": {
+      "screenWidth": 1718,
+      "screenHeight": 960,
+      "availWidth": 1718,
+      "availHeight": 960,
+      "devicePixelRatio": 1,
+      "colorDepth": 30
+    },
+    "browser": "Chromium 151.0.7922.34",
+    "viewport": {
+      "width": 1718,
+      "height": 960
+    },
+    "capturedAt": "2026-10-22T14:23:55.109Z"
+  }
+}

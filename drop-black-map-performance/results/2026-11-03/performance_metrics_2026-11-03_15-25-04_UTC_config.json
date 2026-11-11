@@ -1,0 +1,84 @@
+{
+  "url": "https://drop-black-demo.weather.com/",
+  "desk": null,
+  "layer": "Radar",
+  "model": null,
+  "overlays": {
+    "Windstream": false,
+    "Isobars": false,
+    "Lightning": true,
+    "StormCells": false,
+    "Fronts": false,
+    "GovtAlerts": false,
+    "Airports": true,
+    "SigmetsGovernment": false,
+    "SigmetsTwc": false,
+    "Airspace": false,
+    "AIRMETs": false,
+    "FPGs": false,
+    "PIREPs": false,
+    "SignificantWx": false,
+    "VolcanicAsh": false,
+    "SOFARBuoys": false,
+    "CmanBuoys": true,
+    "ShipReports": true,
+    "WeatherStations": false,
+    "NHCTropicalForecast": false,
+    "TWCTropicalForecast": false,
+    "Wildfires": false
+  },
+  "phases": [
+    {
+      "enabled": true,
+      "projection": "Globe",
+      "style": "Satellite"
+    },
+    {
+      "enabled": false,
+      "projection": "Globe",
+      "style": "Dark"
+    },
+    {
+      "enabled": false,
+      "projection": "Mercator",
+      "style": "Satellite"
+    },
+    {
+      "enabled": true,
+      "projection": "Mercator",
+      "style": "Dark"
+    }
+  ],
+  "phaseDuration": 300000,
+  "timebar": {
+    "enabled": false,
+    "phase": 1,
+    "layer": null,
+    "model": null
+  },
+  "_runEnvironment": {
+    "system": {
+      "os": "macOS 25.6.0",
+      "arch": "arm64",
+      "cpuModel": "Apple M3 Pro",
+      "cpuCores": 12,
+      "totalMemoryGB": 36,
+      "hostname": "TWC-M2HGDHWL4V"
+    },
+    "display": {
+      "screenWidth": 1718,
+      "screenHeight": 960,
+      "availWidth": 1718,
+      "availHeight": 960,
+      "devicePixelRatio": 1,
+      "colorDepth": 30,
+      "refreshRateHz": 121
+    },
+    "browser": "Chromium 151.0.7922.34",
+    "viewport": {
+      "width": 1718,
+      "height": 960
+    },
+    "capturedAt": "2026-11-03T15:25:06.883Z"
+  }
+}
